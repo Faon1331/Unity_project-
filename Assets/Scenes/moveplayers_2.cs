@@ -48,7 +48,7 @@ public class moveplayers_2 : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && maxJumps > 0)
         {
-            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            //rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(Vector3.up * jumpforce, ForceMode.Impulse);
             maxJumps--;
         }

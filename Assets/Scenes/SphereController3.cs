@@ -5,20 +5,19 @@ using UnityEngine;
 public class SphereController3 : MonoBehaviour
 {
     private bool isAnimationPlayed = false;
-
+    Animator anim;
     void Start()
     {
+        anim = gameObject.GetComponent<Animator>();
         isAnimationPlayed = false;
+        anim.SetInteger("isPlaying", 0);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Player") && !isAnimationPlayed)
+        if (collision.transform.tag == "Player")
         {
-            // Воспроизведение анимации надувания сферы 1
-            GetComponent<Animation>().Play("New Anima3542525tion");
-
-            isAnimationPlayed = true;
+            anim.SetInteger("isPlaying", 1);
         }
     }
 } /*New Anima3542525tion*/

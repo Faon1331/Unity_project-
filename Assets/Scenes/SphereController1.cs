@@ -5,19 +5,32 @@ using UnityEngine;
 public class SphereController1 : MonoBehaviour
 {
     private bool isAnimationPlayed = false;
-
+    private float timer;
+    Animator anim;
     void Start()
-    {
+    { 
+        anim = gameObject.GetComponent<Animator>();
         isAnimationPlayed = false;
+        anim.SetInteger("isPlaying", 0);
+    }
+    private void Update()
+    {
+        if (timer > 0)
+        {
+            timer -= Time.deltaTime;
+        }
+        else
+        {
+            anim.SetInteger("isPlaying", 0);
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Player") && !isAnimationPlayed)
+        if (collision.transform.tag == "Player")
         {
-            GetComponent<Animation>().Play("New Anima321214tion");
-
-            isAnimationPlayed = true;
+            anim.SetInteger("isPlaying", 1);
+            timer = 2f;
         }
     }
 } /*New Anima321214tion*/
