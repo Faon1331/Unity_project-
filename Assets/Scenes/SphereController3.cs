@@ -5,6 +5,7 @@ using UnityEngine;
 public class SphereController3 : MonoBehaviour
 {
     private bool isAnimationPlayed = false;
+    private float timer;
     Animator anim;
     void Start()
     {
@@ -12,12 +13,24 @@ public class SphereController3 : MonoBehaviour
         isAnimationPlayed = false;
         anim.SetInteger("isPlaying", 0);
     }
+    private void Update()
+    {
+        if (timer > 0)
+        {
+            timer -= Time.deltaTime;
+        }
+        else
+        {
+            anim.SetInteger("isPlaying", 0);
+        }
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.tag == "Player")
         {
             anim.SetInteger("isPlaying", 1);
+            timer = 2f;
         }
     }
-} /*New Anima3542525tion*/
+}
