@@ -8,7 +8,7 @@ public class ConsoleManager : MonoBehaviour
     private bool isConsoleOpen = false;
     private bool isNoclipEnabled = false;
     private Rigidbody playerRigidbody;
-
+    public Transform maincamera;
     public GameObject consolePanel;
     public InputField consoleInputField;
 
@@ -42,22 +42,20 @@ public class ConsoleManager : MonoBehaviour
             consolePanel.SetActive(false);
         }
 
-        // Движение в режиме "noclip"
         if (isNoclipEnabled)
         {
             float moveSpeed = 10f;
             float verticalSpeed = 10f;
+            float speedMultiplier = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? 2f : 1f; // Ускорение при зажатии Shift
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
 
-            Vector3 moveDirection = new Vector3(horizontal, 0f, vertical).normalized;
-            Vector3 moveVelocity = moveDirection * moveSpeed;
+            Vector3 moveDirection = maincamera.transform.TransformDirection(new Vector3(horizontal, 0f, vertical)).normalized;
+            Vector3 moveVelocity = moveDirection * moveSpeed * speedMultiplier;
 
-            // Учет вертикального движения
             moveVelocity.y += (Input.GetKey(KeyCode.Space) ? 1f : 0f) * verticalSpeed;
             moveVelocity.y -= (Input.GetKey(KeyCode.LeftControl) ? 1f : 0f) * verticalSpeed;
 
-            // Применение скорости к Rigidbody
             playerRigidbody.velocity = moveVelocity;
         }
     }
@@ -80,13 +78,15 @@ public class ConsoleManager : MonoBehaviour
     void EnableNoclip()
     {
         isNoclipEnabled = true;
-        playerRigidbody.velocity = Vector3.zero; // Сбрасываем скорость при включении noclip
+        playerRigidbody.velocity = Vector3.zero;
+        playerRigidbody.useGravity = false;
         Debug.Log("Noclip enabled!");
     }
 
     void DisableNoclip()
     {
         isNoclipEnabled = false;
+        playerRigidbody.useGravity = true;
         Debug.Log("Noclip disabled!");
     }
 }
